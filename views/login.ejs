@@ -1,0 +1,59 @@
+<%- include("./partial/head.ejs") -%>
+<nav>
+    <h1><a href="/">Ninja Smoothies</a></h1>
+    <ul>
+        <li><a href="/signup" class="btn">Sign Up</a></li>
+    </ul>
+</nav>
+
+<h2>Log In</h2>
+<form>
+    <label for="email">Email:</label>
+    <input type="text" name="email" placeholder="Email"/>
+    <div class="email error"></div>
+    <label for="password">Password:</label>
+    <input type="password" name="password" placeholder="Password"/>
+    <div class="password error"></div>
+    <button type="submit">Log In</button>
+</form>
+<script>
+    const form = document.querySelector("form")
+    const emailError = document.querySelector(".email.error")
+    const passwordError = document.querySelector(".password.error")
+
+
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault()
+
+        const email = form.email.value
+        const password = form.password.value
+
+        //reset errors
+        emailError.textContent = ""
+        passwordError.textContent = ""
+
+        try {
+            const response = await fetch("/login", {
+                method: "POST",
+                body: JSON.stringify({email, password}),
+                headers: {"Content-Type" : "application/json"}
+            })
+            const data = await response.json()
+            console.log(data)
+            if(data.errors) {
+                emailError.textContent = data.errors.email
+                passwordError.textContent = data.errors.password
+            }
+            if(data.user) {
+                location.assign("/")
+            }
+            
+
+        }
+        catch{
+
+        }
+    })
+</script>
+
+<%- include("./partial/footer.ejs") -%>
