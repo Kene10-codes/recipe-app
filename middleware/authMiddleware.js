@@ -4,7 +4,7 @@ const User = require("../model/UserModel")
 const requireAuth = (req, res, next) => {
     const token = req.cookies.jwt
     if(token) {
-        jwt.verify(token, "secret key words", (error, decodedToken) => {
+        jwt.verify(token, process.env.token, (error, decodedToken) => {
          if(error) {
              console.log(error.message)
              res.redirect("/login")

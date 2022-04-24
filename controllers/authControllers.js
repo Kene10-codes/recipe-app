@@ -36,7 +36,7 @@ const handlErrors = (err) => {
 //create jwt
 const maxAge = 3 * 24 * 60 * 60
 const createToken = (id) => {
-    return jwt.sign({ id }, "secret key words", {
+    return jwt.sign({ id }, process.env.token, {
         expiresIn: maxAge
     })
 }
@@ -61,9 +61,7 @@ module.exports.signup_post = async (req, res) => {
     catch(err) { 
         const errors = handlErrors(err)
         res.status(400).json({ errors })
-
     }
-    
     console.log(email, password)
 }
 
